@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
 
 function App() {
+  const [quotes, setQuotes] = useState("");
+  const [click, setClick] = useState();
+  useEffect(() => {
+    console.log("Fetching quotes");
+    fetch("http://localhost:5000/quotes/random")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setQuotes(data);
+      });
+  }, [click]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1>GET INSPIRED</h1>
+      <button onClick={() => setClick(!click)}>
+        Click for a new quote below
+      </button>
+      <div className="card">
+        <h4>{quotes.quote}</h4>
+        <h5>- {quotes.author}</h5>
+      </div>
     </div>
   );
 }
